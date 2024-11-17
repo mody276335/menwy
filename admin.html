@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة المنيو</title>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f3f4f6;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #ff5722;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #e64a19;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const isLoggedIn = sessionStorage.getItem("loggedIn");
+        if (!isLoggedIn) {
+            window.location.href = "login.html";
+        }
+    </script>
+    <h1>إدارة المنيو</h1>
+    <div class="form-group">
+        <label for="restaurantName">اسم المطعم:</label>
+        <input type="text" id="restaurantName" placeholder="ادخل اسم المطعم">
+    </div>
+    <div class="form-group">
+        <label for="restaurantLocation">عنوان المحل:</label>
+        <input type="text" id="restaurantLocation" placeholder="ادخل عنوان المحل">
+    </div>
+    <div class="form-group">
+        <label for="productName">اسم الصنف:</label>
+        <input type="text" id="productName" placeholder="ادخل اسم الصنف">
+    </div>
+    <div class="form-group">
+        <label for="productPrice">سعر الصنف:</label>
+        <input type="number" id="productPrice" placeholder="ادخل سعر الصنف">
+    </div>
+    <div class="form-group">
+        <label for="productImage">صورة الصنف:</label>
+        <input type="file" id="productImage" accept="image/*">
+    </div>
+    <button onclick="addProduct()">إضافة الصنف</button>
+    <button onclick="saveRestaurantInfo()">حفظ بيانات المطعم</button>
+    <script>
+        function addProduct() {
+            const name = document.getElementById("productName").value;
+            const price = document.getElementById("productPrice").value;
+            const imageInput = document.getElementById("productImage");
+            const image = imageInput.files[0];
+
+            if (name && price && image) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const menu = JSON.parse(localStorage.getItem("menu")) || [];
+                    menu.push({ name, price, image: e.target.result });
+                    localStorage.setItem("menu", JSON.stringify(menu));
+                    alert("تمت الإضافة بنجاح!");
+                };
+                reader.readAsDataURL(image);
+            } else {
+                alert("يجب ملء جميع الحقول!");
+            }
+        }
+
+        function saveRestaurantInfo() {
+            const name = document.getElementById("restaurantName").value;
+            const location = document.getElementById("restaurantLocation").value;
+
+            if (name) localStorage.setItem("restaurantName", name);
+            if (location) localStorage.setItem("restaurantLocation", location);
+
+            alert("تم حفظ بيانات المطعم!");
+        }
+    </script>
+</body>
+</html>

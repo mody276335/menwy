@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منيو المطعم</title>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+            color: #333;
+        }
+        header {
+            background-color: #ff5722;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        header img {
+            max-height: 60px;
+            position: absolute;
+            left: 20px;
+            top: 10px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .menu-item {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .menu-item:hover {
+            transform: scale(1.05);
+            background-color: #fbe9e7;
+        }
+        .menu-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        footer {
+            background-color: #8b0000;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        footer a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="Logo">
+        <h1 id="restaurantName">اسم المطعم</h1>
+        <p id="restaurantLocation">عنوان المحل: هنا العنوان</p>
+    </header>
+    <div class="container" id="menuContainer">
+        <!-- الأصناف ستظهر هنا -->
+    </div>
+    <footer>
+        <p>تم التطوير بواسطة: محمد الجنرال | رقم الهاتف: 01022116620</p>
+        <a href="https://wa.me/01022116620" target="_blank">واتساب</a>
+        <a href="https://facebook.com" target="_blank">فيسبوك</a>
+    </footer>
+    <script>
+        function loadMenu() {
+            const menuContainer = document.getElementById("menuContainer");
+            const menu = JSON.parse(localStorage.getItem("menu")) || [];
+            menuContainer.innerHTML = menu.map(item => `
+                <div class="menu-item">
+                    <img src="${item.image}" alt="صورة">
+                    <h3>${item.name}</h3>
+                    <p>${item.price} جنيه</p>
+                </div>
+            `).join('');
+            document.getElementById("restaurantName").textContent = localStorage.getItem("restaurantName") || "اسم المطعم";
+            document.getElementById("restaurantLocation").textContent = `عنوان المحل: ${localStorage.getItem("restaurantLocation") || "غير محدد"}`;
+        }
+        window.onload = loadMenu;
+    </script>
+</body>
+</html>
